@@ -53,7 +53,7 @@ Dengan Fitur Simple Yang Di Sediakan
 
 - CMD [ Windows ]
   
-  f15.php UNTUK VERSI Windows
+  f15.php UNTUK VERSI Windows Dan e15.php Untuk **Php Versi Lama** Bukan **Php Versi Modern**
 _____________________________________________________________________________________________________________________________________________________________________________________________________________________________
 ![ff15](https://github.com/user-attachments/assets/9b0f4863-3e98-4a6b-b65f-ec7b9024a1ab)
 
