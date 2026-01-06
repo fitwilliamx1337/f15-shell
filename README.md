@@ -100,3 +100,6 @@ ff15.php
 - CMD [ Linux ]
 
 ff15.php UNTUK VERSI Linux
+
+# a15.php
+Untuk Versi Ringan Dan Tidak Banyak Ukuran File
